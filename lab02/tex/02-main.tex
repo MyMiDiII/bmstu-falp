@@ -1,0 +1,326 @@
+\chapter{Практические задания}
+
+\section{Задание №1}
+
+Составить диаграмму вычисления следующих выражений:
+
+\vspace{4mm}
+\hfill
+\begin{minipage}{0.81\linewidth}
+\begin{lstlisting}
+(equal 3 (abs - 3))
+(equal (+ 1 2) 3)
+(equal (* 4 7) 21)
+(equal 3 (* 2 3) (+ 7 2))
+(equal (- 7 3) (* 3 2))
+(equal (abs (- 2 4)) 3)
+\end{lstlisting}
+\end{minipage}
+
+Решение приложено к отчету на отдельном листе.
+
+\section{Задание №2}
+
+Написать функцию, вычисляющую гипотенузу прямоугольного треугольника по
+заданным катетам и составить диаграмму её вычисления.
+
+\vspace{4mm}
+\begin{minipage}{0.92\linewidth}
+\begin{lstlisting}
+(defun hyp (x y) (sqrt (+ (* x x) (* y y))))
+\end{lstlisting}
+\end{minipage}
+
+Диаграмма приложена к отчету на отдельном листе.
+
+\section{Задание №3}
+
+Написать функцию, вычисляющую объем параллелепипеда по 3-м его
+сторонам, и составить диаграмму ее вычисления.
+
+\vspace{4mm}
+\begin{minipage}{0.92\linewidth}
+\begin{lstlisting}
+(defun volume (x y z) (* x y z))
+\end{lstlisting}
+\end{minipage}
+
+Диаграмма приложена к отчету на отдельном листе.
+
+
+\section{Задание №4}
+
+Каковы результаты вычисления следующих выражений?
+
+\vspace{4mm}
+\begin{minipage}{0.92\linewidth}
+\begin{lstlisting}
+(list 'a c)                     
+;; Результат
+;; Ошибка: несвязанная переменная c
+;; Устранение: добавление апострофа перед c
+
+(cons 'a (b c))
+;; Результат
+;; Ошибка: неопределенная функция b, несвязанная переменная c
+;; Устранение: добавление апострофа перед (b c)
+
+(cons 'a '(b c))
+;; Результат
+;; (a b c)
+
+(caddy (1 2 3 4 5))
+;; Результат
+;; Ошибка: неопределенная функция caddy,
+;;         недопустимый вызов функции (имя -- цифра)
+;; Устранение: caddy -> caddr,
+;;             добавление апострофа перед (1 2 3 4 5)
+
+(cons 'a 'b 'c)
+;; Результат
+;; Ошибка: недопустимое количество параметров
+;; Устранение: переча 2-ух параметров вместо 3-ех
+
+(list 'a (b c))
+;; Результат
+;; Ошибка: неопределенная функция b, несвязанная переменная c
+;; Устранение: добавление апострофа перед (b c)
+
+(list a '(b c))
+;; Результат
+;; Ошибка: несвязанная переменная a
+;; Устранение: добавление апострофа перед a
+
+(list (+ 1 '(length '(1 2 3))))
+;; Результат
+;; Ошибка: (length '(1 2 3)) не является числом (это список)
+;; Устранение: удаление апострофа перед (length '(1 2 3))
+\end{lstlisting}
+\end{minipage}
+
+\section{Задание №5}
+
+Написать функцию longer\_then от двух списков-аргументов, которые возвращает T,
+если первый аргумент имеет большую длину.
+
+\vspace{4mm}
+\begin{minipage}{0.92\linewidth}
+\begin{lstlisting}
+(defun longer_then (list1 list2)
+    (> (length list1) (length list2)))
+\end{lstlisting}
+\end{minipage}
+
+
+\section{Задание №6}
+
+Каковы результаты вычисления следующих выражений?
+
+\vspace{4mm}
+\begin{minipage}{0.92\linewidth}
+\begin{lstlisting}
+;; Выражение                                Результат
+(cons 3 (list 5 6))                         ; (3 5 6)
+(list 3 'from 9 'lives (- 9 3))             ; (3 from 9 lives 6)
+(+ (length for 2 too) (car '(21 22 23)))    ; ошибка: несвязанная
+                                            ; переменная for
+(cdr '(cons is short for ans))              ; (is short for and)
+(car (list one two))                        ; ошибка: несвязанная
+                                            ; переменная one
+(cons 3 '(list 5 6))                        ; (3 list 5 6)
+(car (list 'one 'two))                      ; (one)
+\end{lstlisting}
+\end{minipage}
+
+\section{Задание №7}
+
+Дана функция:
+
+\vspace{4mm}
+\begin{minipage}{0.92\linewidth}
+\begin{lstlisting}
+(defun mystery (x) (list (second x) (first x)))
+\end{lstlisting}
+\end{minipage}
+
+Какие результаты вычисления следующих выражений?
+
+\vspace{4mm}
+\begin{minipage}{0.92\linewidth}
+\begin{lstlisting}
+(mystery (one two))
+;; Результат
+;; Ошибка: несвязанная переменная two, неопределенная функция one
+;; При исправлении:
+;; (mystery '(one two)) -> (two one)
+
+(mystery (last one two))
+;; Результат
+;; Ошибка: несвязанная переменная one
+;; При исправлении:
+;; (mystery (last '(one two))) -> (nil two)
+
+(mystery free)
+;; Результат
+;; Ошибка: несвязанная переменная free
+;; При исправлении:
+;; (mystery '(free)) -> (nil free)
+\end{lstlisting}
+\end{minipage}
+
+\vspace{4mm}
+\begin{minipage}{0.92\linewidth}
+\begin{lstlisting}
+(mystery one 'two)
+;; Результат
+;; Ошибка: несвязанная переменная one
+;; При исправлении:
+;; (mystery 'one 'two) неверное число аргументов
+;; (mystery '(one two)) -> (two one)
+\end{lstlisting}
+\end{minipage}
+
+\section{Задание №8}
+
+Написать функцию, которая переводит температуру в системе Фаренгейта в
+температуру по Цельсию.
+Как бы назывался роман Р.~Брэдбери <<451 градус по Фаренгейту>> в системе по Цельсию?
+
+\vspace{4mm}
+\begin{minipage}{0.92\linewidth}
+\begin{lstlisting}
+(defun f-to-c (temp) 
+    (* 5/9 (- temp 32.0)))
+
+(f-to-c 451) ; 232.77779
+\end{lstlisting}
+\end{minipage}
+
+\section{Задание №9}
+
+Какие результаты вычисления следующих выражений?
+
+\vspace{4mm}
+\begin{minipage}{0.92\linewidth}
+\begin{lstlisting}
+;; Выражение                     Результат
+(list 'cons t Nil)               ; (cons t nil)
+(eval (list 'cons t Nil))        ; (T)
+(eval (eval (list 'cons t Nil))) ; неопределенная функция T 
+(apply #cons ''(t Nil))          ; ошибка: неверный формат
+                                 ; комплексного числа
+;; при исправлении
+(apply #'cons ''(t nil))         ; (quote t nil)
+(list 'eval Nil)                 ; (eval nil)
+(eval Nil)                       ; (nil)
+(eval (list 'eval Nil))          ; (nil)
+\end{lstlisting}
+\end{minipage}
+
+\section{Дополнительное задание №1}
+
+Написать функцию, вычисляющую катет по заданной гипотенузе и другому
+катету прямоугольного треугольника, и составить диаграмму ее выражения.
+
+\vspace{4mm}
+\begin{minipage}{0.92\linewidth}
+\begin{lstlisting}
+(defun cathetus (hyp cath)
+    (sqrt (- (* hyp hyp) (* cath cath))))
+\end{lstlisting}
+\end{minipage}
+
+Диаграмма приложена к отчету на отдельном листе.
+
+\section{Дополнительное задание №2}
+
+Написать функцию, вычисляющую площадь трапеции по ее основаниям и
+высоте, и составить диаграмму ее вычисления.
+
+\vspace{4mm}
+\begin{minipage}{0.92\linewidth}
+\begin{lstlisting}
+(defun trapez_area (a b h)
+    (* (/ (+ a b) 2.0) h))
+\end{lstlisting}
+\end{minipage}
+
+Диаграмма приложена к отчету на отдельном листе.
+
+
+\chapter{Теоретические вопросы}
+
+\section{Базис языка Lisp}
+
+Базис языка --- минимальный набор конструкций и структур данных, с помощью
+которого можно решить любую задачу.
+
+Базис Lisp образуют:
+\begin{itemize}
+    \item атомы;
+    \item структуры;
+    \item базовые функции (atom, eq, cons, car, cdr);
+    \item базовые специальные функции и  функционалы (cond, quote, lambda, eval).
+\end{itemize}
+
+\section{Классификация функций}
+
+Функции классифицируются на:
+
+\begin{itemize}
+    \item чистые функции;
+    \item рекурсивные;
+    \item специальные функции или формы;
+    \item псевдофункции;
+    \item функции с вариантами значений;
+    \item функционалы.
+\end{itemize}
+
+Классификация базовых функций:
+\begin{itemize}
+    \item селекторы (car, cdr);
+    \item конструкторы (cons, list);
+    \item предикаты (null, consp, ...);
+\end{itemize}
+
+
+\section{Способы создания функций}
+
+Лямбда определения:
+
+\vspace{4mm}
+\begin{minipage}{0.92\linewidth}
+\begin{lstlisting}
+(lambda <lambda-список> <форма>) ; lambda-выражение
+;; <lambda-список> -- список аргументов
+;; <форма> -- тело функции
+\end{lstlisting}
+\end{minipage}
+
+Определение функций с именем:
+
+\vspace{4mm}
+\begin{minipage}{0.92\linewidth}
+\begin{lstlisting}
+(defun <имя> <lambda-выражение>)
+\end{lstlisting}
+\end{minipage}
+
+\section{Функции car и cdr}
+
+Функции car и cdr --- базовые функции доступа к данным, принимающие точечную
+пару или список в качестве аргумента.
+
+car --- функция, обеспечивающая доступ к первому элементу.
+
+cdr --- функция, обеспечивающая доступ ко всем элементам, кроме первого.
+
+\section{Назначение и отличие в работе cons и list}
+
+Функции cons и list --- конструкторы.
+
+Функция cons создает списковую ячейку и расставляет 2 указателя на
+аргументы.
+
+Функция list принимает нефиксированное число аргументов и возвращает список,
+создает столько списковых ячеек, сколько элементов.
