@@ -1,0 +1,285 @@
+\chapter{Практические задания}
+
+\section{Задание №1}
+
+Написать функцию, которая принимает целое число и возвращает первое четное
+число, не меньшее аргумента.
+
+\vspace{4mm}
+\hfill
+\begin{minipage}{0.92\linewidth}
+\begin{lstlisting}
+(defun first-greater-even (num)
+    (if (evenp num) num (+ num 1)))
+\end{lstlisting}
+\end{minipage}
+
+
+\section{Задание №2}
+
+Написать функцию, которая принимает число и возвращает число того же знака, но с
+модулем на 1 больше модуля аргумента.
+
+\vspace{4mm}
+\begin{minipage}{0.92\linewidth}
+\begin{lstlisting}
+(defun plus-minus-one (num)
+    (+ num (if (> num 0) 1 -1)))
+\end{lstlisting}
+\end{minipage}
+
+\section{Задание №3}
+
+Написать функцию, которая принимает два числа и возвращает список из этих чисел,
+расположенных по возрастанию.
+
+\vspace{4mm}
+\begin{minipage}{0.92\linewidth}
+\begin{lstlisting}
+(defun make-growing-list (a b)
+    (if (< a b) (list a b) (list b a)))
+\end{lstlisting}
+\end{minipage}
+
+\section{Задание №4}
+
+Написать функцию, которая принимает три числа и возвращает Т только тогда, когда
+первое число расположено между вторым и третьим.
+
+\vspace{4mm}
+\begin{minipage}{0.92\linewidth}
+\begin{lstlisting}
+(defun is-between (a b c)
+    (or (and (> a b) (< a c)) (and (> a c) (< a b))))
+\end{lstlisting}
+\end{minipage}
+
+\section{Задание №5}
+
+Каков результат вычисления следующих выражений?
+
+\vspace{4mm}
+\begin{minipage}{0.92\linewidth}
+\begin{lstlisting}
+(and 'fee 'fie 'foe)          ; foe
+(or nil 'fie 'foe)            ; fie
+(and (equal 'abc 'abc) 'yes)  ; yes 
+(or 'fee 'fie 'foe)           ; fee
+(and nil 'fie 'foe)           ; nil
+(or (equal 'abc 'abc) 'yes)   ; T
+\end{lstlisting}
+\end{minipage}
+
+\section{Задание №6}
+
+Написать предикат, который принимает два числа-аргумента и возвращает Т, если
+первое число не меньше второго.
+
+\vspace{4mm}
+\begin{minipage}{0.92\linewidth}
+\begin{lstlisting}
+(defun pred (a b)
+    (>= a b))
+\end{lstlisting}
+\end{minipage}
+
+\section{Задание №7}
+
+Какой из следующих двух вариантов предиката ошибочен и почему?
+
+\vspace{4mm}
+\begin{minipage}{0.92\linewidth}
+\begin{lstlisting}
+(defun pred1 (x)
+    (and (numberp x) (plusp x)))
+
+(defun pred2 (x)
+    (and (plusp x) (numberp x)))
+\end{lstlisting}
+\end{minipage}
+
+Ошибочным является второй вариант, так как функция plusp принимает на вход один
+аргумент типа number, из-за чего аргументы, не являющиеся числами, будут
+вызывать ошибку. При этом в первом варианте, если при проверке, является ли
+аргумент числом, получится значение Nil, то and вернет его в качестве
+результата, не продолжая дальнейшие вычисления, а при передачи числа будет
+проведена проверка на положительность.
+
+\section{Задание №8}
+
+Решить задачу 4, используя для ее решения конструкции IF, COND, AND/OR.
+
+\vspace{4mm}
+\begin{minipage}{0.92\linewidth}
+\begin{lstlisting}
+;; if
+(defun is-between-if (a b c)
+    (if (> a b) (< a c) (> a c)))
+
+;; cond
+(defun is-between-cond (a b c)
+    (cond
+        ((> a b) (< a c))
+        ((< a b) (> a c))))
+
+;; and/or
+(defun is-between (a b c)
+    (or (and (> a b) (< a c)) (and (> a c) (< a b))))
+\end{lstlisting}
+\end{minipage}
+
+\section{Задание №9}
+
+Переписать функцию how-alike, приведенную в лекции и использующую COND,
+используя только конструкции IF, AND/OR.
+
+\vspace{4mm}
+\begin{minipage}{0.92\linewidth}
+\begin{lstlisting}
+;; cond
+(defun how-alike (x y)
+    (cond ((or (= x y) (equal x y)) 'the_same)
+          ((and (oddp x) (oddp y)) 'both_odd)
+          ((and (evenp x) (evenp y)) 'both_even)
+          (t 'difference)))
+
+;; if
+(defun how-alike-if (x y)
+    (if (or (= x y) (equal x y)) 'the_same
+        (if (and (oddp x) (oddp y)) 'both_odd
+            (if (and (evenp x) (evenp y)) 'both_even
+                'difference))))
+
+;; and/or
+(defun how-alike-and-or (x y)
+    (or (and (or (= x y) (equal x y)) 'the_same)
+        (and (and (oddp x) (oddp y)) 'both_odd)
+        (and (and (evenp x) (evenp y)) 'both_even)
+        'difference))
+\end{lstlisting}
+\end{minipage}
+
+\chapter{Теоретические вопросы}
+
+\section{Базис языка Lisp}
+
+Базис языка --- минимальный набор конструкций и структур данных, с помощью
+которого можно решить любую задачу.
+
+Базис Lisp образуют:
+\begin{itemize}
+    \item атомы;
+    \item структуры;
+    \item базовые функции (atom, eq, cons, car, cdr);
+    \item базовые специальные функции и  функционалы (cond, quote, lambda, eval).
+\end{itemize}
+
+\section{Классификация функций}
+
+Функции классифицируются на:
+
+\begin{itemize}
+    \item чистые функции;
+    \item рекурсивные;
+    \item специальные функции или формы;
+    \item псевдофункции;
+    \item функции с вариантами значений;
+    \item функционалы.
+\end{itemize}
+
+Классификация базовых функций:
+\begin{itemize}
+    \item селекторы (car, cdr);
+    \item конструкторы (cons, list);
+    \item предикаты (null, consp, ...);
+\end{itemize}
+
+
+\section{Способы создания функций}
+
+Лямбда определения:
+
+\vspace{4mm}
+\begin{minipage}{0.92\linewidth}
+\begin{lstlisting}
+(lambda <lambda-список> <форма>) ; lambda-выражение
+;; <lambda-список> -- список аргументов
+;; <форма> -- тело функции
+\end{lstlisting}
+\end{minipage}
+
+Определение функций с именем:
+
+\vspace{4mm}
+\begin{minipage}{0.92\linewidth}
+\begin{lstlisting}
+(defun <имя> <lambda-выражение>)
+\end{lstlisting}
+\end{minipage}
+
+\section{Работа функций cond, if, and/or}
+
+\subsection{Функция cond}
+
+Синтаксис:
+
+\vspace{4mm}
+\begin{minipage}{0.92\linewidth}
+\begin{lstlisting}
+(cond
+    (test1 body1)
+    (test2 body2)
+    ...
+    (testN bodyN)
+    [(T else-body)])
+\end{lstlisting}
+\end{minipage}
+
+По порядку вычисляются и проверяются на равенство с Nil предикаты. Для
+первого предиката, который не равен Nil, вычисляется находящееся с ним
+в списке выражение и возвращается его значение. Если все предкаты вернут
+Nil, то и cond вернет Nil. Ветка <<else>> организуется явным указанием в
+качестве test --- T.
+
+\subsection{Функция if}
+
+Синтаксис:
+
+\vspace{4mm}
+\begin{minipage}{0.92\linewidth}
+\begin{lstlisting}
+(if test t-body f-body)
+\end{lstlisting}
+\end{minipage}
+
+Если вычисленный предикат не Nil, то выполняется t-body, иначе ---
+\mbox{f-body}.
+
+\subsection{Функция and}
+
+Синтаксис:
+
+\vspace{4mm}
+\begin{minipage}{0.92\linewidth}
+\begin{lstlisting}
+(and arg1 arg2 ... argN)
+\end{lstlisting}
+\end{minipage}
+
+Функция возвращает Nil при встрече первого (при вычислении слева направо)
+аргумента со значением Nil. Если
+все не Nil, то возвращается результат вычисления последнего аргумента.
+
+\subsection{Функция or}
+
+Синтаксис:
+
+\vspace{4mm}
+\begin{minipage}{0.92\linewidth}
+\begin{lstlisting}
+(or arg1 arg2 ... argN)
+\end{lstlisting}
+\end{minipage}
+
+Функция возвращает первый arg\_i, результат вычисления которого не
+Nil. Если все Nil, то возвращается Nil.
