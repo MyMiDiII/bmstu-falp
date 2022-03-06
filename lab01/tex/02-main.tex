@@ -1,0 +1,216 @@
+\chapter{Практические задания}
+
+\section{Задание №1}
+
+Решение приложено к отчету на отдельном листе.
+
+\section{Задание №2}
+
+Используя функции $\text{CAR}$ и $\text{CDR}$, написать выражения,
+возвращающие:
+\begin{enumerate}
+    \item второй элемент;
+
+    \vspace{4mm}
+    \hfill
+    \begin{minipage}{0.81\linewidth}
+    \begin{lstlisting}
+(car (cdr '(a b c d)))
+    \end{lstlisting}
+    \end{minipage}
+
+    \item третий элемент;
+
+    \vspace{4mm}
+    \hfill
+    \begin{minipage}{0.81\linewidth}
+    \begin{lstlisting}
+(car (cdr (cdr '(a b c d))))
+    \end{lstlisting}
+    \end{minipage}
+
+    \item четвертый элемент.
+
+    \vspace{4mm}
+    \hfill
+    \begin{minipage}{0.81\linewidth}
+    \begin{lstlisting}
+(car (cdr (cdr (cdr '(a b c d)))))
+    \end{lstlisting}
+    \end{minipage}
+\end{enumerate}
+
+\section{Задание №3}
+
+Что будет в результате вычисления выражений?
+
+\begin{enumerate}
+    \item Выражение:
+
+        \vspace{4mm}
+        \hfill
+        \begin{minipage}{0.81\linewidth}
+        \begin{lstlisting}
+(caadr '((blue cube) (red pyramid)))
+        \end{lstlisting}
+        \end{minipage}
+
+    ~~~~Результат: red
+
+    \item Выражение:
+
+        \vspace{4mm}
+        \hfill
+        \begin{minipage}{0.81\linewidth}
+        \begin{lstlisting}
+(cdar '((abc) (def) (ghi)))
+        \end{lstlisting}
+        \end{minipage}
+
+    ~~~~Результат: Nil
+
+    \item Выражение:
+
+        \vspace{4mm}
+        \hfill
+        \begin{minipage}{0.81\linewidth}
+        \begin{lstlisting}
+(cadr '((abc) (def) (ghi)))
+        \end{lstlisting}
+        \end{minipage}
+
+    ~~~~Результат: (def)
+
+    \item Выражение:
+
+        \vspace{4mm}
+        \hfill
+        \begin{minipage}{0.81\linewidth}
+        \begin{lstlisting}
+(caddr '((abc) (def) (ghi)))
+        \end{lstlisting}
+        \end{minipage}
+
+    ~~~~Результат: (ghi)
+\end{enumerate}
+
+\section{Задание №4}
+
+Напишите результат вычисления выражений:
+
+\vspace{4mm}
+\begin{minipage}{0.92\linewidth}
+\begin{lstlisting}
+;; Выражение                     Результат
+(list 'Fred 'and 'Wilma)        ; (Fred and Wilma)
+(list 'Fred '(and Wilma))       ; (Fred (and Wilma))
+(cons Nil Nil)                  ; (Nil)
+(cons T Nil)                    ; (T)
+(cons Nil T)                    ; (Nil . T)
+(list Nil)                      ; (Nil)
+(cons '(T) Nil)                 ; ((T))
+(list '(one two) '(free temp))  ; ((one two) (free temp))
+(cons 'Fred '(and Wilma))       ; (Fred and Wilma)
+(cons 'Fred '(Wilma))           ; (Fred Wilma)
+(list Nil Nil)                  ; (Nil Nil)
+(list T Nil)                    ; (T Nil)
+(list Nil T)                    ; (Nil T)
+(cons T (list Nil))             ; (T Nil)
+(list '(T) Nil)                 ; ((T) Nil)
+(cons '(one two) '(free temp))  ; ((one two) free temp)
+\end{lstlisting}
+\end{minipage}
+
+
+\section{Задание №5}
+
+Решение приложено к отчету на отдельном листе.
+
+\chapter{Теоретические вопросы}
+
+\section{Элементы языка: определение, синтаксис, представление в памяти}
+
+Вся информация (данные и программы) в Lisp представляется в виде символьных
+выражений --- S-выражений.
+
+\vspace{4mm}
+\begin{minipage}{0.92\linewidth}
+\begin{lstlisting}
+S-выражние ::= <атом>|<точечная пара>
+\end{lstlisting}
+\end{minipage}
+
+Атомы:
+\begin{itemize}
+    \item символы --- синтаксически --- набор литер (букв и цифр), начинающийся
+        с буквы;
+    \item специальные символы \{T, Nil\} обозначают логические константы;
+    \item самоопределимые атомы --- натуральные, дробные, вещественные
+        числа и строки.
+\end{itemize}
+
+Более сложные данные --- точечные пары и списки (структуры).
+
+\vspace{4mm}
+\begin{minipage}{0.92\linewidth}
+\begin{lstlisting}
+Точечные пары ::= (<атом>, <атом>) 
+                | (<атом>, <точечная пара>)
+                | (<точечная пара>, <атом>)
+                | (<точечная пара>, <точечная пара>)
+\end{lstlisting}
+\end{minipage}
+
+\vspace{4mm}
+\begin{minipage}{0.92\linewidth}
+\begin{lstlisting}
+Список ::= <пустой список> | <непустой список>
+<пустой список> ::= () | Nil
+<непустой список> ::= (<первый элемент>, <хвост>)
+<первый элемент> ::= <S-выражение>
+<хвост> ::= <список>
+\end{lstlisting}
+\end{minipage}
+
+Синтаксически любая структура заключается в круглые скобки:
+\begin{itemize}
+    \item (A . B) -- точечная пара;
+    \item (A) -- список из одного элемента;
+    \item Nil или () -- пустой список;
+    \item (A . (B . (C . (D ()))))) или (A B C D) -- непустой список;
+    \item элементы списка могу являться списками: ((A)(B)(CD)).
+\end{itemize}
+
+Любая непустая структура Lisp в памяти представляется списковой ячейкой,
+хранящей два указателя: на голову (первый элемент) и хвост (все остальное).
+
+\section{Особенности языка Lisp. Структура программы. Символ апостроф}
+
+Особенности языка Lisp:
+\begin{itemize}
+    \item символьная обработка данных;
+    \item любая программа может интерпретироваться как функция с
+        одним или несколькими аргументами;
+    \item автоматизированное динамическое распределение памяти, которая
+        выделяется блоками;
+    \item бестиповый язык;
+    \item программа может быть представлена как данные, то есть программа
+        может изменять саму себя.
+\end{itemize}
+
+Символ апостроф --- сокращеное обозначение функции quote, блокирующей
+вычисление своего аргумента.
+
+\section{Базис языка Lisp. Ядро языка}
+
+Базис языка --- минимальный набор конструкций и структур данных, с помощью
+которого можно написать любую программу.
+
+Базис Lisp образуют:
+\begin{itemize}
+    \item атомы;
+    \item структуры;
+    \item базовые функции;
+    \item базовые функционалы.
+\end{itemize}
+
