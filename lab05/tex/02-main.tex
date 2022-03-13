@@ -1,0 +1,144 @@
+\chapter{Практические задания}
+
+\vspace{4mm}
+\hfill
+\begin{minipage}{0.92\linewidth}
+\begin{lstlisting}
+\end{lstlisting}
+\end{minipage}
+
+\section{Задание №1}
+
+Написать функцию, которая по своему списку-аргументу lst определяет, является
+ли он палиндромом (то есть равны ли lst и (reverse lst)).
+
+\vspace{4mm}
+\hfill
+\begin{minipage}{0.92\linewidth}
+\begin{lstlisting}
+(defun is-palindrome (lst)
+    (equal lst (reverse lst)))
+\end{lstlisting}
+\end{minipage}
+
+\section{Задание №2}
+
+Написать предикат set-equal, который возвращает t, если два его
+множества-аргумента содержат одни и те же элементы, порядок которых не имеет
+значения.
+
+\vspace{4mm}
+\begin{minipage}{0.92\linewidth}
+\begin{lstlisting}
+(defun set-equal1 (set1 set2)
+    (and (subsetp set1 set2) (subsetp set2 set1)))
+\end{lstlisting}
+\end{minipage}
+
+\vspace{4mm}
+\begin{minipage}{0.92\linewidth}
+\begin{lstlisting}
+\end{lstlisting}
+\end{minipage}
+
+\section{Задание №3}
+
+Напишите свои необходимые функции, которые обрабатывают таблицу из 4-х точечных
+пар (страна . столица) и возращают по стране --- столицу, а по столице ---
+страну.
+
+\vspace{4mm}
+\begin{minipage}{0.92\linewidth}
+\begin{lstlisting}
+\end{lstlisting}
+\end{minipage}
+
+\section{Задание №4}
+
+Напишите функцию swap-first-last, которая переставляет в списке-аргументе
+первый и последний элементы.
+
+\vspace{4mm}
+\begin{minipage}{0.92\linewidth}
+\begin{lstlisting}
+\end{lstlisting}
+\end{minipage}
+
+
+\section{Задание №5}
+
+Напишите функцию swap-two-element, которая переставляет в списке-аргументе
+два указанных своими порядковыми номерами элемента в этой списке.
+
+\vspace{4mm}
+\begin{minipage}{0.92\linewidth}
+\begin{lstlisting}
+\end{lstlisting}
+\end{minipage}
+
+\section{Задание №6}
+
+Напишите две функции swap-to-left и swap-to-right, которые производят одну
+круговую перестановку в списке-аргументе влево и вправо, соответсвенно.
+
+\vspace{4mm}
+\begin{minipage}{0.92\linewidth}
+\begin{lstlisting}
+\end{lstlisting}
+\end{minipage}
+
+\section{Задание №7}
+
+Напишите функцию, которая добавляет к множеству двухэлементных списков
+новых двухэлементный список, если его там нет.
+
+\vspace{4mm}
+\begin{minipage}{0.92\linewidth}
+\begin{lstlisting}
+\end{lstlisting}
+\end{minipage}
+
+\section{Задание №8}
+
+Напишите функцию, которая умножает на заданное число-аргумент первый
+числовой элемент списка из заданного 3-хэлементного списка-аргумента
+когда:
+
+\begin{enumerate}
+    \item все элементы списка --- числа,
+
+\vspace{4mm}
+\begin{minipage}{0.92\linewidth}
+\begin{lstlisting}
+\end{lstlisting}
+\end{minipage}
+
+    \item элементы списка --- любые объекты.
+
+\vspace{4mm}
+\begin{minipage}{0.92\linewidth}
+\begin{lstlisting}
+\end{lstlisting}
+\end{minipage}
+
+\end{enumerate}
+
+\section{Задание №9}
+
+Напишите функцию select-between, которая из списка-аргумента из 5 чисел
+выбирает только те, которые расположены между двумя указанными
+границами-аргументами и возвращет их в виде списка (упорядоченного по
+возрастанию списка чисел).
+
+\vspace{4mm}
+\begin{minipage}{0.92\linewidth}
+\begin{lstlisting}
+\end{lstlisting}
+\end{minipage}
+
+\chapter{Теоретические вопросы}
+
+\section{Структуроразрушающие и не разрушающие структуру списка
+функции}
+
+\section{Отличие в работе функций cons, list, append, nconc и в их результате}
