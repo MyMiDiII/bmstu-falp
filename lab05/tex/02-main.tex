@@ -35,21 +35,29 @@
 \end{lstlisting}
 \end{minipage}
 
-\vspace{4mm}
-\begin{minipage}{0.92\linewidth}
-\begin{lstlisting}
-\end{lstlisting}
-\end{minipage}
-
 \section{Задание №3}
 
 Напишите свои необходимые функции, которые обрабатывают таблицу из 4-х точечных
-пар (страна . столица) и возращают по стране --- столицу, а по столице ---
+пар (страна . столица) и возвращают по стране --- столицу, а по столице ---
 страну.
 
 \vspace{4mm}
 \begin{minipage}{0.92\linewidth}
 \begin{lstlisting}
+(defun get-capital (table country)
+    (cond ((null table) Nil)
+          ((equal (caar table) country) (cdar table))
+          (T (get-capital (cdr table) country))))
+\end{lstlisting}
+\end{minipage}
+
+\vspace{4mm}
+\begin{minipage}{0.92\linewidth}
+\begin{lstlisting}
+(defun get-country (table capital)
+    (cond ((null table) Nil)
+          ((equal (cdar table) capital) (caar table))
+          (T (get-country (cdr table) capital))))
 \end{lstlisting}
 \end{minipage}
 
@@ -61,9 +69,14 @@
 \vspace{4mm}
 \begin{minipage}{0.92\linewidth}
 \begin{lstlisting}
+(defun swap-first-last (lst)
+    (let ((fst-el (car lst))
+          (lst-el (last lst)))
+         (setf (car lst) (car lst-el))
+         (setf (car lst-el) fst-el))
+         lst)
 \end{lstlisting}
 \end{minipage}
-
 
 \section{Задание №5}
 
@@ -73,24 +86,42 @@
 \vspace{4mm}
 \begin{minipage}{0.92\linewidth}
 \begin{lstlisting}
+(defun swap-two-element (lst num1 num2)
+    (let ((len (length lst)))
+         (and (< num1 len) (< num2 len)
+             (let ((fst-el (nth num1 lst))
+                   (snd-el (nth num2 lst)))
+                  (setf (nth num1 lst) snd-el)
+                  (setf (nth num2 lst) fst-el))
+                  lst)))
 \end{lstlisting}
 \end{minipage}
 
 \section{Задание №6}
 
 Напишите две функции swap-to-left и swap-to-right, которые производят одну
-круговую перестановку в списке-аргументе влево и вправо, соответсвенно.
+круговую перестановку в списке-аргументе влево и вправо, соответственно.
 
 \vspace{4mm}
 \begin{minipage}{0.92\linewidth}
 \begin{lstlisting}
+(defun swap-to-left (lst)
+     (append (cdr lst) (cons (car lst) Nil)))
+\end{lstlisting}
+\end{minipage}
+
+\vspace{4mm}
+\begin{minipage}{0.92\linewidth}
+\begin{lstlisting}
+(defun swap-to-right (lst)
+     (cons (car (last lst)) (reverse (cdr (reverse lst)))))
 \end{lstlisting}
 \end{minipage}
 
 \section{Задание №7}
 
 Напишите функцию, которая добавляет к множеству двухэлементных списков
-новых двухэлементный список, если его там нет.
+новый двухэлементный список, если его там нет.
 
 \vspace{4mm}
 \begin{minipage}{0.92\linewidth}
