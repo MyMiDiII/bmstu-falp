@@ -1,12 +1,5 @@
 \chapter{Практические задания}
 
-\vspace{4mm}
-\hfill
-\begin{minipage}{0.92\linewidth}
-\begin{lstlisting}
-\end{lstlisting}
-\end{minipage}
-
 \section{Задание №1}
 
 Написать функцию, которая по своему списку-аргументу lst определяет, является
@@ -70,6 +63,16 @@
 \begin{minipage}{0.92\linewidth}
 \begin{lstlisting}
 (defun swap-first-last (lst)
+    (cond ((null (cdr lst)) lst)
+          (T (cons (car (last lst))
+                  (reverse (cons (car lst) (cdr (reverse (cdr lst)))))))))
+\end{lstlisting}
+\end{minipage}
+
+\vspace{4mm}
+\begin{minipage}{0.92\linewidth}
+\begin{lstlisting}
+(defun swap-first-last (lst)
     (let ((fst-el (car lst))
           (lst-el (last lst)))
          (setf (car lst) (car lst-el))
@@ -126,6 +129,10 @@
 \vspace{4mm}
 \begin{minipage}{0.92\linewidth}
 \begin{lstlisting}
+(defun add-two-el-list (list-set lst)
+    (cond ((null list-set) (list lst))
+          ((equal (car list-set) lst) list-set)
+          (T (cons (car list-set) (add-two-el-list (cdr list-set) lst))))
 \end{lstlisting}
 \end{minipage}
 
@@ -141,6 +148,8 @@
 \vspace{4mm}
 \begin{minipage}{0.92\linewidth}
 \begin{lstlisting}
+(defun mul-first-nums (lst num)
+    (and lst (setf (car lst) (* (car lst) num)) lst))
 \end{lstlisting}
 \end{minipage}
 
@@ -149,6 +158,10 @@
 \vspace{4mm}
 \begin{minipage}{0.92\linewidth}
 \begin{lstlisting}
+(defun mul-first-num (lst num)
+    (cond ((null lst) lst)
+          ((numberp (car lst)) (cons (* (car lst) num) (cdr lst)))
+          (T (cons (car lst) (mul-first-num (cdr lst) num)))))
 \end{lstlisting}
 \end{minipage}
 
@@ -164,6 +177,14 @@
 \vspace{4mm}
 \begin{minipage}{0.92\linewidth}
 \begin{lstlisting}
+(defun select-between (lst begin end)
+    (cond ((null lst) Nil)
+          ((not (< begin (car lst) end))
+                (select-between (cdr lst) begin end))
+          (T (cons (car lst) (select-between (cdr lst) begin end)))))
+
+(defun sort-select-between (lst begin end)
+    (sort (select-between lst begin end) #'<))
 \end{lstlisting}
 \end{minipage}
 
@@ -172,4 +193,27 @@
 \section{Структуроразрушающие и не разрушающие структуру списка
 функции}
 
+Структуроразрушающие функции --- функции, после использования которых
+теряется возможность работы изначальными списками. Эти функции изменяют сам
+объект. Чаще всего такие функции начинаются с префикса \texttt{n} (например,
+\texttt{nconc}, \texttt{nreverse} и т.~п.).
+
+Функции, не разрушающие структуру списка --- функции, после использования
+которых сохраняется возможность работы с изначальными списками. Эти функции
+не изменяют сам объект, а создают копии (например, \texttt{append},
+\texttt{reverse}, \texttt{length} и т.~п.).
+
 \section{Отличие в работе функций cons, list, append, nconc и в их результате}
+
+\texttt{conc} создает списковую ячейку и расставляет указатели (car-указатель
+--- на первый аргумент, cdr-указатель --- на второй аргумент), если второй
+аргумент --- список, то возвращает список, если нет --- точечную пару.
+
+\texttt{list} создает столько списковых ячеек, сколько аргументов, возвращет
+список.
+
+\texttt{append} создает копии всех элементов кроме последнего и расставляет
+cdr-указатели последних элементов копий на следующие копии/аргумент.
+
+\texttt{nconc} аналогична \texttt{append} только работает не с копиями, а с
+исходными списками.
