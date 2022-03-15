@@ -1,12 +1,5 @@
 \chapter{Практические задания}
 
-\vspace{4mm}
-\hfill
-\begin{minipage}{0.92\linewidth}
-\begin{lstlisting}
-\end{lstlisting}
-\end{minipage}
-
 \section{Задание №1}
 
 Напишите функцию, которая уменьшает на 10 все числа из списка-аргумента этой
@@ -16,6 +9,11 @@
 \hfill
 \begin{minipage}{0.92\linewidth}
 \begin{lstlisting}
+(defun minus10 (lst)
+    (mapcar #'(lambda (x)
+                 (cond ((numberp x) (- x 10))
+                       ((listp x) (minus10 x))
+                       (T x))) lst))
 \end{lstlisting}
 \end{minipage}
 
@@ -30,6 +28,8 @@
 \vspace{4mm}
 \begin{minipage}{0.92\linewidth}
 \begin{lstlisting}
+(defun mul-num (lst num)
+    (mapcar #'(lambda (x) (* x num)) lst))
 \end{lstlisting}
 \end{minipage}
 
@@ -38,6 +38,11 @@
 \vspace{4mm}
 \begin{minipage}{0.92\linewidth}
 \begin{lstlisting}
+(defun mul-num (lst num)
+    (mapcar #'(lambda (x)
+                 (cond ((numberp x) (* x num))
+                       ((listp x) (mul-num x num))
+                       (T x))) lst))
 \end{lstlisting}
 \end{minipage}
 \end{enumerate}
@@ -50,6 +55,11 @@
 \vspace{4mm}
 \begin{minipage}{0.92\linewidth}
 \begin{lstlisting}
+(defun my-reverse (lst)
+    (reduce #'(lambda (x y) (cons y x)) (cons nil lst)))
+
+(defun is-palindrome (lst)
+    (equal lst (my-reverse lst)))
 \end{lstlisting}
 \end{minipage}
 
@@ -62,17 +72,29 @@
 \vspace{4mm}
 \begin{minipage}{0.92\linewidth}
 \begin{lstlisting}
+(defun is-in (el st)
+    (reduce #'(lambda (x y) (or x y))
+            (mapcar #'(lambda (x) (equal x el)) st) :initial-value Nil))
+
+(defun is-subset (st1 st2)
+    (reduce #'(lambda (x y) (and x y))
+            (mapcar #'(lambda (x) (is-in x st2)) st1) :initial-value T))
+
+(defun set-equal (st1 st2)
+    (and (is-subset st1 st2) (is-subset st2 st1)))
 \end{lstlisting}
 \end{minipage}
 
 \section{Задание №5}
 
-Написать фукнцию, которая получает как аргумент список чисел, а возвращает
+Написать функцию, которая получает как аргумент список чисел, а возвращает
 список квадратов этих чисел в том же порядке.
 
 \vspace{4mm}
 \begin{minipage}{0.92\linewidth}
 \begin{lstlisting}
+(defun squares (lst)
+    (mapcar #'(lambda (x) (* x x) lst)))
 \end{lstlisting}
 \end{minipage}
 
@@ -86,6 +108,15 @@
 \vspace{4mm}
 \begin{minipage}{0.92\linewidth}
 \begin{lstlisting}
+(defun sort-insert (el lst)
+    (cond ((null lst) (list el))
+          ((< el (car lst)) (cons el lst))
+          (T (cons (car lst) (sort-insert el (cdr lst))))))
+
+(defun select-between (lst begin end)
+    (reduce #'(lambda (res x)
+                  (cond ((< begin x end) (sort-insert x res))
+                        (T res))) lst :initial-value Nil))
 \end{lstlisting}
 \end{minipage}
 
@@ -97,6 +128,9 @@
 \vspace{4mm}
 \begin{minipage}{0.92\linewidth}
 \begin{lstlisting}
+(defun cartesian (lst1 lst2)
+    (mapcan #'(lambda (el1)
+                    (mapcar #'(lambda (el2) (list el1 el2)) lst2)) lst1))
 \end{lstlisting}
 \end{minipage}
 
@@ -107,17 +141,15 @@
 \vspace{4mm}
 \begin{minipage}{0.92\linewidth}
 \begin{lstlisting}
-(reduce #'+0) -> 0
-(reduce #'+()) -> 0
+(reduce #'+ '(0)) -> 0
+(reduce #'+ ()) -> 0
 \end{lstlisting}
 \end{minipage}
 
-\vspace{4mm}
-\begin{minipage}{0.92\linewidth}
-\begin{lstlisting}
-\end{lstlisting}
-\end{minipage}
-
+Функция проверяет список-аргумент. Если он содержит только один элемент и
+initial-value не задано, то возвращается элемент и функция не вызывается.
+Если список-аргумент пустой и initial-value не задано, то функция вызывается с
+нулевым количеством параметров.
 
 \section{Задание №9}
 
@@ -128,6 +160,10 @@
 \vspace{4mm}
 \begin{minipage}{0.92\linewidth}
 \begin{lstlisting}
+(defun get-length (lst)
+    (reduce #'(lambda (cur-len x) 
+                   (cond ((listp x) (+ cur-len (get-length x)))
+                         (T (+ cur-len 1)))) lst :initial-value 0))
 \end{lstlisting}
 \end{minipage}
 
