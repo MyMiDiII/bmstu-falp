@@ -16,6 +16,12 @@
 \hfill
 \begin{minipage}{0.92\linewidth}
 \begin{lstlisting}
+(defun move-to (lst res)
+    (cond ((null lst) res)
+          (T (move-to (cdr lst) (cons (car lst) res)))))
+
+(defun my-reverse (lst)
+    (move-to lst ()))
 \end{lstlisting}
 \end{minipage}
 
@@ -27,6 +33,10 @@
 \vspace{4mm}
 \begin{minipage}{0.92\linewidth}
 \begin{lstlisting}
+(defun get-list (lst)
+    (cond ((null lst) lst)
+          ((and (car lst) (listp (car lst))) (car lst))
+          (T (get-list (cdr lst)))))
 \end{lstlisting}
 \end{minipage}
 
@@ -38,6 +48,16 @@
 \vspace{4mm}
 \begin{minipage}{0.92\linewidth}
 \begin{lstlisting}
+(defun sba (lst begin end res)
+    (cond ((null lst) res)
+          ((and (numberp (car lst)) (< begin (car lst) end))
+               (sba (cdr lst) begin end (nconc res (list (car lst)))))
+          ((listp (car lst)) 
+               (sba (cdr lst) begin end (sba (car lst) begin end res)))
+          (T (sba (cdr lst) begin end res))))
+
+(defun select-between-all (lst begin end)
+    (sba lst begin end ()))
 \end{lstlisting}
 \end{minipage}
 
@@ -52,6 +72,8 @@
 \vspace{4mm}
 \begin{minipage}{0.92\linewidth}
 \begin{lstlisting}
+(defun mul-nums (lst num)
+    (cond (null lst) ))
 \end{lstlisting}
 \end{minipage}
 
@@ -67,9 +89,8 @@
 
 \section{Задание №5}
 
-Напишите функцию select-between, которая из списка-аргумента, содержащег
-только числа
-выбирает только те, которые расположены между двумя указанными
+Напишите функцию select-between, которая из списка-аргумента, содержащего только
+числа выбирает только те, которые расположены между двумя указанными
 границами-аргументами и возвращет их в виде списка (упорядоченного по
 возрастанию списка чисел).
 
@@ -82,7 +103,7 @@
 \section{Задание №6}
 
 Написать рекурсивную версию (с именем rec-add) вычисления суммы чисел
-заданног списка: 
+заданного списка: 
 \begin{enumerate}
     \item одноуровневого смешанного;
 
