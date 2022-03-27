@@ -49,9 +49,9 @@
 \begin{minipage}{0.92\linewidth}
 \begin{lstlisting}
 (defun sba (lst begin end res)
-    (cond ((null lst) res)
+    (cond ((null lst) (my-reverse res))
           ((and (numberp (car lst)) (< begin (car lst) end))
-               (sba (cdr lst) begin end (nconc res (list (car lst)))))
+               (sba (cdr lst) begin end (cons (car lst) res)))
           ((listp (car lst)) 
                (sba (cdr lst) begin end (sba (car lst) begin end res)))
           (T (sba (cdr lst) begin end res))))
@@ -72,8 +72,12 @@
 \vspace{4mm}
 \begin{minipage}{0.92\linewidth}
 \begin{lstlisting}
+(defun mul-nums-res (lst num res)
+    (cond ((null lst) (my-reverse res))
+          (T (mul-nums-res (cdr lst) num (cons (* (car lst) num) res)))))
+
 (defun mul-nums (lst num)
-    (cond (null lst) ))
+    (mul-nums-res lst num ()))
 \end{lstlisting}
 \end{minipage}
 
