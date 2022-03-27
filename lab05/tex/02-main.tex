@@ -129,14 +129,10 @@
 \vspace{4mm}
 \begin{minipage}{0.92\linewidth}
 \begin{lstlisting}
-(defun adel (list-set lst is-in res)
-    (cond ((null list-set) (cons (list lst) res))
-          ; тут нужна проверка is-in еще вместе с null
-          (T (add-two-el-list (cdr list-set) lst (or is-in (equal (car list-set)
-          ) lst (cons (car list-set) res))))
-
 (defun add-two-el-list (list-set lst)
-    (adel list-set lst Nil ()))
+    (cond ((null list-set) (list lst))
+          ((equal (car list-set) lst) list-set)
+          (T (cons (car list-set) (add-two-el-list (cdr list-set) lst))))
 \end{lstlisting}
 \end{minipage}
 
