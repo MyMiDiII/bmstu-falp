@@ -77,14 +77,26 @@
 \vspace{4mm}
 \begin{minipage}{0.92\linewidth}
 \begin{lstlisting}
+(defun ste (lst num1 num2 cur-ind first-el res)
+    (cond ((null lst) (reverse res))
+          ((= cur-ind num1)
+              (ste (cdr lst) num1 num2 (+ cur-ind 1) (car lst)
+                   (cons (nth (- num2 num1) lst) res)))
+          ((= cur-ind num2)
+              (ste (cdr lst) num1 num2 (+ cur-ind 1) first-el
+                   (cons first-el res)))
+          (T (ste (cdr lst) num1 num2 (+ cur-ind 1) first-el
+                  (cons (car lst) res)))))
+
 (defun swap-two-element (lst num1 num2)
-    (let ((len (length lst)))
-         (and (< num1 len) (< num2 len)
-             (let ((fst-el (nth num1 lst))
-                   (snd-el (nth num2 lst)))
-                  (setf (nth num1 lst) snd-el)
-                  (setf (nth num2 lst) fst-el))
-                  lst)))
+    (cond
+     ((or (>= num1 (length lst))
+          (>= num2 (length lst))
+          (< num1 0)
+          (< num2 0))
+      Nil)
+     ((< num1 num2) (ste lst num1 num2 0 Nil ()))
+     (T (ste lst num2 num1 0 Nil ()))))
 \end{lstlisting}
 \end{minipage}
 
