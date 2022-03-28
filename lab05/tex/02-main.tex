@@ -149,7 +149,7 @@
 \begin{minipage}{0.92\linewidth}
 \begin{lstlisting}
 (defun mul-first-nums (lst num)
-    (and lst (setf (car lst) (* (car lst) num)) lst))
+    (and lst (cons (* (car lst) num) (cdr lst))))
 \end{lstlisting}
 \end{minipage}
 
