@@ -12,8 +12,8 @@
 (defun minus10 (lst)
     (mapcar #'(lambda (x)
                  (cond ((numberp x) (- x 10))
-                       ((listp x) (minus10 x))
-                       (T x))) lst))
+                       ((atom x) x)
+                       (T (minus10 x)))) lst))
 \end{lstlisting}
 \end{minipage}
 
@@ -41,8 +41,8 @@
 (defun mul-num (lst num)
     (mapcar #'(lambda (x)
                  (cond ((numberp x) (* x num))
-                       ((listp x) (mul-num x num))
-                       (T x))) lst))
+                       ((atom x) x)
+                       (T (mul-num x num)))) lst))
 \end{lstlisting}
 \end{minipage}
 \end{enumerate}
@@ -102,21 +102,13 @@
 
 Напишите функцию select-between, которая из списка-аргумента, содержащего
 только числа, выбирает только те, которые расположены между двумя указанными
-границами-аргументами и возращает их в виде списка (упорядоченного по
-возрастанию списка чисел).
+границами-аргументами и возращает их в виде списка.
 
 \vspace{4mm}
 \begin{minipage}{0.92\linewidth}
 \begin{lstlisting}
-(defun sort-insert (el lst)
-    (cond ((null lst) (list el))
-          ((< el (car lst)) (cons el lst))
-          (T (cons (car lst) (sort-insert el (cdr lst))))))
-
 (defun select-between (lst begin end)
-    (reduce #'(lambda (res x)
-                  (cond ((< begin x end) (sort-insert x res))
-                        (T res))) lst :initial-value Nil))
+    (remove-if-not #'(lambda (x) (< begin x end)) lst))
 \end{lstlisting}
 \end{minipage}
 
@@ -161,9 +153,8 @@ initial-value не задано, то возвращается элемент и
 \begin{minipage}{0.92\linewidth}
 \begin{lstlisting}
 (defun get-length (lst)
-    (reduce #'(lambda (cur-len x) 
-                   (cond ((listp x) (+ cur-len (get-length x)))
-                         (T (+ cur-len 1)))) lst :initial-value 0))
+    (reduce #'+ (mapcar #'(lambda (x) (cond ((atom x) 1)
+                                            (T (get-length x)))) lst)))
 \end{lstlisting}
 \end{minipage}
 
