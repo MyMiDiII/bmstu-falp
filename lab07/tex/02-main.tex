@@ -34,7 +34,7 @@
 \begin{minipage}{0.92\linewidth}
 \begin{lstlisting}
 (defun get-first-list-el (lst)
-    (cond ((null lst) lst)
+    (cond ((null lst) Nil)
           ((and (car lst) (listp (car lst))) (caar lst))
           (T (get-list (cdr lst)))))
 \end{lstlisting}
@@ -104,15 +104,14 @@
 
 Напишите функцию select-between, которая из списка-аргумента, содержащего только
 числа выбирает только те, которые расположены между двумя указанными
-границами-аргументами и возвращет их в виде списка.
+границами-аргументами и возвращает их в виде списка.
 
 \vspace{4mm}
 \begin{minipage}{0.92\linewidth}
 \begin{lstlisting}
 (defun sb (lst begin end res)
     (cond ((null lst) res)
-          ((and (numberp (car lst))
-                (or (< begin (car lst) end) (< end (car lst) begin)))
+          ((or (< begin (car lst) end) (< end (car lst) begin))
                (sb (cdr lst) begin end (cons (car lst) res)))
           (T (sb (cdr lst) begin end res))))
 
@@ -131,6 +130,13 @@
 \vspace{4mm}
 \begin{minipage}{0.92\linewidth}
 \begin{lstlisting}
+(defun ra (lst res)
+    (cond ((null lst) res)
+          ((numberp (car lst)) (ra (cdr lst) (+ (car lst) res)))
+          (T (ra (cdr lst) res))))
+
+(defun rec-add (lst)
+    (ra lst 0))
 \end{lstlisting}
 \end{minipage}
 
@@ -139,6 +145,14 @@
 \vspace{4mm}
 \begin{minipage}{0.92\linewidth}
 \begin{lstlisting}
+(defun ra (lst res)
+    (cond ((null lst) res)
+          ((numberp (car lst)) (ra (cdr lst) (+ (car lst) res)))
+          ((atom (car lst)) (ra (cdr lst) res))
+          (T (ra (cdr lst) (ra (car lst) res)))))
+
+(defun rec-add (lst)
+    (ra lst 0))
 \end{lstlisting}
 \end{minipage}
 
@@ -151,6 +165,13 @@
 \vspace{4mm}
 \begin{minipage}{0.92\linewidth}
 \begin{lstlisting}
+(defun rec-num-nth (n lst cur-ind)
+    (cond ((null lst) Nil)
+          ((= cur-ind n) (car lst))
+          (T (rec-num-nth n (cdr lst) (+ cur-ind 1)))))
+
+(defun recnth (n lst)
+    (rec-num-nth n lst 0))
 \end{lstlisting}
 \end{minipage}
 
@@ -162,6 +183,10 @@
 \vspace{4mm}
 \begin{minipage}{0.92\linewidth}
 \begin{lstlisting}
+(defun allodd (lst)
+    (cond ((null lst) T)
+          ((evenp (car lst)) Nil)
+          (T (allodd (cdr lst)))))
 \end{lstlisting}
 \end{minipage}
 
@@ -174,6 +199,11 @@
 \vspace{4mm}
 \begin{minipage}{0.92\linewidth}
 \begin{lstlisting}
+(defun first-odd (lst)
+    (cond ((null lst) Nil)
+          ((and (numberp (car lst)) (oddp (car lst))) (car lst))
+          ((atom (car lst)) (first-odd (cdr lst)))
+          (T (or (first-odd (car lst)) (first-odd (cdr lst))))))
 \end{lstlisting}
 \end{minipage}
 
@@ -186,6 +216,9 @@
 \vspace{4mm}
 \begin{minipage}{0.92\linewidth}
 \begin{lstlisting}
+(defun squares (lst)
+    (cond ((null lst) Nil)
+          (T (cons (* (car lst) (car lst)) (squares (cdr lst)))))
 \end{lstlisting}
 \end{minipage}
 
