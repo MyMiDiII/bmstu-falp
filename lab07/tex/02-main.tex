@@ -33,9 +33,9 @@
 \vspace{4mm}
 \begin{minipage}{0.92\linewidth}
 \begin{lstlisting}
-(defun get-list (lst)
+(defun get-first-list-el (lst)
     (cond ((null lst) lst)
-          ((and (car lst) (listp (car lst))) (car lst))
+          ((and (car lst) (listp (car lst))) (caar lst))
           (T (get-list (cdr lst)))))
 \end{lstlisting}
 \end{minipage}
@@ -49,12 +49,12 @@
 \begin{minipage}{0.92\linewidth}
 \begin{lstlisting}
 (defun sba (lst begin end res)
-    (cond ((null lst) (my-reverse res))
-          ((and (numberp (car lst)) (< begin (car lst) end))
+    (cond ((null lst) res)
+          ((and (numberp (car lst))
+                (or (< begin (car lst) end) (< end (car lst) begin)))
                (sba (cdr lst) begin end (cons (car lst) res)))
-          ((listp (car lst)) 
-               (sba (cdr lst) begin end (sba (car lst) begin end res)))
-          (T (sba (cdr lst) begin end res))))
+          ((atom (car lst)) (sba (cdr lst) begin end res))
+          (T (sba (cdr lst) begin end (sba (car lst) begin end res)))))
 
 (defun select-between-all (lst begin end)
     (sba lst begin end ()))
@@ -73,7 +73,7 @@
 \begin{minipage}{0.92\linewidth}
 \begin{lstlisting}
 (defun mul-nums-res (lst num res)
-    (cond ((null lst) (my-reverse res))
+    (cond ((null lst) res)
           (T (mul-nums-res (cdr lst) num (cons (* (car lst) num) res)))))
 
 (defun mul-nums (lst num)
@@ -86,6 +86,15 @@
 \vspace{4mm}
 \begin{minipage}{0.92\linewidth}
 \begin{lstlisting}
+(defun mn (lst num res)
+    (cond ((null lst) res)
+          ((numberp (car lst))
+              (mn (cdr lst) num (cons (* (car lst) num) res)))
+          ((atom (car lst)) (mn (cdr lst) num (cons (car lst) res)))
+          (T (mn (cdr lst) num (cons (mn (car lst) num ()) res)))))
+
+(defun mul-num (lst num)
+    (mn lst num ()))
 \end{lstlisting}
 \end{minipage}
 
@@ -95,12 +104,20 @@
 
 Напишите функцию select-between, которая из списка-аргумента, содержащего только
 числа выбирает только те, которые расположены между двумя указанными
-границами-аргументами и возвращет их в виде списка (упорядоченного по
-возрастанию списка чисел).
+границами-аргументами и возвращет их в виде списка.
 
 \vspace{4mm}
 \begin{minipage}{0.92\linewidth}
 \begin{lstlisting}
+(defun sb (lst begin end res)
+    (cond ((null lst) res)
+          ((and (numberp (car lst))
+                (or (< begin (car lst) end) (< end (car lst) begin)))
+               (sb (cdr lst) begin end (cons (car lst) res)))
+          (T (sb (cdr lst) begin end res))))
+
+(defun select-between (lst begin end)
+    (sb lst begin end ()))
 \end{lstlisting}
 \end{minipage}
 
