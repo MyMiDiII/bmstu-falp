@@ -1,0 +1,160 @@
+\chapter{Практические задания}
+
+\section{Задание №1}
+
+Напишите функцию, которая уменьшает на 10 все числа из списка-аргумента этой
+функции.
+
+\vspace{4mm}
+\hfill
+\begin{minipage}{0.92\linewidth}
+\begin{lstlisting}
+(defun minus10 (lst)
+    (mapcar #'(lambda (x)
+                 (cond ((numberp x) (- x 10))
+                       ((atom x) x)
+                       (T (minus10 x)))) lst))
+\end{lstlisting}
+\end{minipage}
+
+\section{Задание №2}
+
+Напишите функцию, которая умножает на заданное число-аргумент все числа
+из заданного списка-аргумента, когда:
+
+\begin{enumerate}
+    \item все элементы списка --- числа,
+
+\vspace{4mm}
+\begin{minipage}{0.92\linewidth}
+\begin{lstlisting}
+(defun mul-num (lst num)
+    (mapcar #'(lambda (x) (* x num)) lst))
+\end{lstlisting}
+\end{minipage}
+
+    \item элементы списка --- любые объекты.
+
+\vspace{4mm}
+\begin{minipage}{0.92\linewidth}
+\begin{lstlisting}
+(defun mul-num (lst num)
+    (mapcar #'(lambda (x)
+                 (cond ((numberp x) (* x num))
+                       ((atom x) x)
+                       (T (mul-num x num)))) lst))
+\end{lstlisting}
+\end{minipage}
+\end{enumerate}
+
+\section{Задание №3}
+
+Написать функцию, которая по своему списке-аргументу lst определяет, является
+ли он палиндромом (то есть равны ли lst и (reverse lst)).
+
+\vspace{4mm}
+\begin{minipage}{0.92\linewidth}
+\begin{lstlisting}
+(defun my-reverse (lst)
+    (reduce #'(lambda (x y) (cons y x)) (cons nil lst)))
+
+(defun is-palindrome (lst)
+    (equal lst (my-reverse lst)))
+\end{lstlisting}
+\end{minipage}
+
+\section{Задание №4}
+
+Написать предикат set-equal, который возвращает t, если два его
+множества-аргумента содержат одни и те же элементы, порядок которых не имеет
+значения.
+
+\vspace{4mm}
+\begin{minipage}{0.92\linewidth}
+\begin{lstlisting}
+(defun is-in (el st)
+    (reduce #'(lambda (x y) (or x y))
+            (mapcar #'(lambda (x) (equal x el)) st) :initial-value Nil))
+
+(defun is-subset (st1 st2)
+    (reduce #'(lambda (x y) (and x y))
+            (mapcar #'(lambda (x) (is-in x st2)) st1) :initial-value T))
+
+(defun set-equal (st1 st2)
+    (and (is-subset st1 st2) (is-subset st2 st1)))
+\end{lstlisting}
+\end{minipage}
+
+\section{Задание №5}
+
+Написать функцию, которая получает как аргумент список чисел, а возвращает
+список квадратов этих чисел в том же порядке.
+
+\vspace{4mm}
+\begin{minipage}{0.92\linewidth}
+\begin{lstlisting}
+(defun squares (lst)
+    (mapcar #'(lambda (x) (* x x) lst)))
+\end{lstlisting}
+\end{minipage}
+
+\section{Задание №6}
+
+Напишите функцию select-between, которая из списка-аргумента, содержащего
+только числа, выбирает только те, которые расположены между двумя указанными
+границами-аргументами и возращает их в виде списка.
+
+\vspace{4mm}
+\begin{minipage}{0.92\linewidth}
+\begin{lstlisting}
+(defun select-between (lst begin end)
+    (remove-if-not #'(lambda (x) (< begin x end)) lst))
+\end{lstlisting}
+\end{minipage}
+
+\section{Задание №7}
+
+Написать функцию, вычисляющую декартово произведение двух своих
+списков-аргументов.
+
+\vspace{4mm}
+\begin{minipage}{0.92\linewidth}
+\begin{lstlisting}
+(defun cartesian (lst1 lst2)
+    (mapcan #'(lambda (el1)
+                    (mapcar #'(lambda (el2) (list el1 el2)) lst2)) lst1))
+\end{lstlisting}
+\end{minipage}
+
+\section{Задание №8}
+
+Почему так реализовано reduce, в чем причина?
+
+\vspace{4mm}
+\begin{minipage}{0.92\linewidth}
+\begin{lstlisting}
+(reduce #'+ '(0)) ; -> 0
+(reduce #'+ 0)    ; -> Error
+\end{lstlisting}
+\end{minipage}
+
+Функция проверяет список-аргумент. Если он содержит только один элемент и
+initial-value не задано, то возвращается элемент и функция не вызывается.
+Если список-аргумент пустой и initial-value не задано, то функция вызывается с
+нулевым количеством параметров.
+
+\section{Задание №9}
+
+Пусть list-of-list список, состоящий из списков. Написать функцию, которая
+вычисляет сумму длин всех элементов list-of-list, т.~е., например, для
+аргумента ((1 2) (3 4)) -> 4.
+
+\vspace{4mm}
+\begin{minipage}{0.92\linewidth}
+\begin{lstlisting}
+(defun get-length (lst)
+    (reduce #'+ (mapcar #'(lambda (x) (cond ((atom x) 1)
+                                            (T (get-length x)))) lst)))
+\end{lstlisting}
+\end{minipage}
+
