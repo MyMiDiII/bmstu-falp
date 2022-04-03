@@ -1,0 +1,217 @@
+\chapter{Практические задания}
+
+\section{Задание №1}
+
+Написать хвостовую рекурсивную функцию my-reverse, которая развернет верхний
+уровень своего списка-аргумента lst.
+
+\vspace{4mm}
+\hfill
+\begin{minipage}{0.92\linewidth}
+\begin{lstlisting}
+(defun move-to (lst res)
+    (cond ((null lst) res)
+          (T (move-to (cdr lst) (cons (car lst) res)))))
+
+(defun my-reverse (lst)
+    (move-to lst ()))
+\end{lstlisting}
+\end{minipage}
+
+\section{Задание №2}
+
+Написать функцию, которая возвращает первый элемент списка-аргумента, который
+сам является непустым списком.
+
+\vspace{4mm}
+\begin{minipage}{0.92\linewidth}
+\begin{lstlisting}
+(defun get-first-list-el (lst)
+    (cond ((null lst) Nil)
+          ((and (car lst) (listp (car lst))) (caar lst))
+          (T (get-list (cdr lst)))))
+\end{lstlisting}
+\end{minipage}
+
+\section{Задание №3}
+
+Написать функцию, которая выбирает из заданного списка только те числа,
+которые больше 1 и меньше 10 (между двумя заданными границами).
+
+\vspace{4mm}
+\begin{minipage}{0.92\linewidth}
+\begin{lstlisting}
+(defun sba (lst begin end res)
+    (cond ((null lst) res)
+          ((and (numberp (car lst))
+                (or (< begin (car lst) end) (< end (car lst) begin)))
+               (sba (cdr lst) begin end (cons (car lst) res)))
+          ((atom (car lst)) (sba (cdr lst) begin end res))
+          (T (sba (cdr lst) begin end (sba (car lst) begin end res)))))
+
+(defun select-between-all (lst begin end)
+    (sba lst begin end ()))
+\end{lstlisting}
+\end{minipage}
+
+\section{Задание №4}
+
+Напишите рекурсивную функцию, которая умножает на заданное
+число-аргумент все числа из заданного списка-аргумента, когда 
+
+\begin{enumerate}
+    \item все элементы списка --- числа,
+
+\vspace{4mm}
+\begin{minipage}{0.92\linewidth}
+\begin{lstlisting}
+(defun mul-nums-res (lst num res)
+    (cond ((null lst) res)
+          (T (mul-nums-res (cdr lst) num (cons (* (car lst) num) res)))))
+
+(defun mul-nums (lst num)
+    (mul-nums-res lst num ()))
+\end{lstlisting}
+\end{minipage}
+
+    \item элементы списка --- любые объекты.
+
+\vspace{4mm}
+\begin{minipage}{0.92\linewidth}
+\begin{lstlisting}
+(defun mn (lst num res)
+    (cond ((null lst) res)
+          ((numberp (car lst))
+              (mn (cdr lst) num (cons (* (car lst) num) res)))
+          ((atom (car lst)) (mn (cdr lst) num (cons (car lst) res)))
+          (T (mn (cdr lst) num (cons (mn (car lst) num ()) res)))))
+
+(defun mul-num (lst num)
+    (mn lst num ()))
+\end{lstlisting}
+\end{minipage}
+
+\end{enumerate}
+
+\section{Задание №5}
+
+Напишите функцию select-between, которая из списка-аргумента, содержащего только
+числа выбирает только те, которые расположены между двумя указанными
+границами-аргументами и возвращает их в виде списка.
+
+\vspace{4mm}
+\begin{minipage}{0.92\linewidth}
+\begin{lstlisting}
+(defun sb (lst begin end res)
+    (cond ((null lst) res)
+          ((or (< begin (car lst) end) (< end (car lst) begin))
+               (sb (cdr lst) begin end (cons (car lst) res)))
+          (T (sb (cdr lst) begin end res))))
+
+(defun select-between (lst begin end)
+    (sb lst begin end ()))
+\end{lstlisting}
+\end{minipage}
+
+\section{Задание №6}
+
+Написать рекурсивную версию (с именем rec-add) вычисления суммы чисел
+заданного списка: 
+\begin{enumerate}
+    \item одноуровневого смешанного;
+
+\vspace{4mm}
+\begin{minipage}{0.92\linewidth}
+\begin{lstlisting}
+(defun ra (lst res)
+    (cond ((null lst) res)
+          ((numberp (car lst)) (ra (cdr lst) (+ (car lst) res)))
+          (T (ra (cdr lst) res))))
+
+(defun rec-add (lst)
+    (ra lst 0))
+\end{lstlisting}
+\end{minipage}
+
+    \item структурированного.
+
+\vspace{4mm}
+\begin{minipage}{0.92\linewidth}
+\begin{lstlisting}
+(defun ra (lst res)
+    (cond ((null lst) res)
+          ((numberp (car lst)) (ra (cdr lst) (+ (car lst) res)))
+          ((atom (car lst)) (ra (cdr lst) res))
+          (T (ra (cdr lst) (ra (car lst) res)))))
+
+(defun rec-add (lst)
+    (ra lst 0))
+\end{lstlisting}
+\end{minipage}
+
+\end{enumerate}
+
+\section{Задание №7}
+
+Написать рекурсивную версию с имененем recnth функции nth.
+
+\vspace{4mm}
+\begin{minipage}{0.92\linewidth}
+\begin{lstlisting}
+(defun rec-num-nth (n lst cur-ind)
+    (cond ((null lst) Nil)
+          ((= cur-ind n) (car lst))
+          (T (rec-num-nth n (cdr lst) (+ cur-ind 1)))))
+
+(defun recnth (n lst)
+    (rec-num-nth n lst 0))
+\end{lstlisting}
+\end{minipage}
+
+\section{Задание №8}
+
+Написать рекурсивную функцию allodd, которая возвращает t, когда все элементы
+списка нечетные.
+
+\vspace{4mm}
+\begin{minipage}{0.92\linewidth}
+\begin{lstlisting}
+(defun allodd (lst)
+    (cond ((null lst) T)
+          ((evenp (car lst)) Nil)
+          (T (allodd (cdr lst)))))
+\end{lstlisting}
+\end{minipage}
+
+\section{Задание №9}
+
+Написать рекурсивную функцию, которая возвращает первое нечетное число
+из списка (структурированного), возможно создавая некоторые вспомогательные
+функции.
+
+\vspace{4mm}
+\begin{minipage}{0.92\linewidth}
+\begin{lstlisting}
+(defun first-odd (lst)
+    (cond ((null lst) Nil)
+          ((and (numberp (car lst)) (oddp (car lst))) (car lst))
+          ((atom (car lst)) (first-odd (cdr lst)))
+          (T (or (first-odd (car lst)) (first-odd (cdr lst))))))
+\end{lstlisting}
+\end{minipage}
+
+\section{Задание №10}
+
+Используя cons-дополняемую рекурсию с одним тестом завершения, написать функцию,
+которая получает как аргумент список чисел, а возвращает список квадратов этих
+чисел в том же порядке.
+
+\vspace{4mm}
+\begin{minipage}{0.92\linewidth}
+\begin{lstlisting}
+(defun squares (lst)
+    (cond ((null lst) Nil)
+          (T (cons (* (car lst) (car lst)) (squares (cdr lst))))))
+\end{lstlisting}
+\end{minipage}
+
