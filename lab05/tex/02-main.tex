@@ -1,0 +1,219 @@
+\chapter{Практические задания}
+
+\section{Задание №1}
+
+Написать функцию, которая по своему списку-аргументу lst определяет, является
+ли он палиндромом (то есть равны ли lst и (reverse lst)).
+
+\vspace{4mm}
+\hfill
+\begin{minipage}{0.92\linewidth}
+\begin{lstlisting}
+(defun is-palindrome (lst)
+    (equal lst (reverse lst)))
+\end{lstlisting}
+\end{minipage}
+
+\section{Задание №2}
+
+Написать предикат set-equal, который возвращает t, если два его
+множества-аргумента содержат одни и те же элементы, порядок которых не имеет
+значения.
+
+\vspace{4mm}
+\begin{minipage}{0.92\linewidth}
+\begin{lstlisting}
+(defun set-equal1 (set1 set2)
+    (and (subsetp set1 set2) (subsetp set2 set1)))
+\end{lstlisting}
+\end{minipage}
+
+\section{Задание №3}
+
+Напишите свои необходимые функции, которые обрабатывают таблицу из 4-х точечных
+пар (страна . столица) и возвращают по стране --- столицу, а по столице ---
+страну.
+
+\vspace{4mm}
+\begin{minipage}{0.92\linewidth}
+\begin{lstlisting}
+(defun get-capital (table country)
+    (cond ((null table) Nil)
+          ((equal (caar table) country) (cdar table))
+          (T (get-capital (cdr table) country))))
+\end{lstlisting}
+\end{minipage}
+
+\vspace{4mm}
+\begin{minipage}{0.92\linewidth}
+\begin{lstlisting}
+(defun get-country (table capital)
+    (cond ((null table) Nil)
+          ((equal (cdar table) capital) (caar table))
+          (T (get-country (cdr table) capital))))
+\end{lstlisting}
+\end{minipage}
+
+\section{Задание №4}
+
+Напишите функцию swap-first-last, которая переставляет в списке-аргументе
+первый и последний элементы.
+
+\vspace{4mm}
+\begin{minipage}{0.92\linewidth}
+\begin{lstlisting}
+(defun swap-first-last (lst)
+    (cond ((null (cdr lst)) lst)
+          (T (cons (car (last lst))
+                  (reverse (cons (car lst) (cdr (reverse (cdr lst)))))))))
+\end{lstlisting}
+\end{minipage}
+
+\section{Задание №5}
+
+Напишите функцию swap-two-element, которая переставляет в списке-аргументе
+два указанных своими порядковыми номерами элемента в этой списке.
+
+\vspace{4mm}
+\begin{minipage}{0.92\linewidth}
+\begin{lstlisting}
+(defun ste (lst num1 num2 cur-ind first-el res)
+    (cond ((null lst) (reverse res))
+          ((= cur-ind num1)
+              (ste (cdr lst) num1 num2 (+ cur-ind 1) (car lst)
+                   (cons (nth (- num2 num1) lst) res)))
+          ((= cur-ind num2)
+              (ste (cdr lst) num1 num2 (+ cur-ind 1) first-el
+                   (cons first-el res)))
+          (T (ste (cdr lst) num1 num2 (+ cur-ind 1) first-el
+                  (cons (car lst) res)))))
+
+(defun swap-two-element (lst num1 num2)
+    (cond
+     ((or (>= num1 (length lst))
+          (>= num2 (length lst))
+          (< num1 0)
+          (< num2 0))
+      Nil)
+     ((< num1 num2) (ste lst num1 num2 0 Nil ()))
+     (T (ste lst num2 num1 0 Nil ()))))
+\end{lstlisting}
+\end{minipage}
+
+\section{Задание №6}
+
+Напишите две функции swap-to-left и swap-to-right, которые производят одну
+круговую перестановку в списке-аргументе влево и вправо, соответственно.
+
+\vspace{4mm}
+\begin{minipage}{0.92\linewidth}
+\begin{lstlisting}
+(defun swap-to-left (lst)
+     (append (cdr lst) (cons (car lst) Nil)))
+\end{lstlisting}
+\end{minipage}
+
+\vspace{4mm}
+\begin{minipage}{0.92\linewidth}
+\begin{lstlisting}
+(defun swap-to-right (lst)
+     (cons (car (last lst)) (reverse (cdr (reverse lst)))))
+\end{lstlisting}
+\end{minipage}
+
+\section{Задание №7}
+
+Напишите функцию, которая добавляет к множеству двухэлементных списков
+новый двухэлементный список, если его там нет.
+
+\vspace{4mm}
+\begin{minipage}{0.92\linewidth}
+\begin{lstlisting}
+(defun add-two-el-list (list-set lst)
+    (cond ((null list-set) (list lst))
+          ((equal (car list-set) lst) list-set)
+          (T (cons (car list-set) (add-two-el-list (cdr list-set) lst))))
+\end{lstlisting}
+\end{minipage}
+
+\section{Задание №8}
+
+Напишите функцию, которая умножает на заданное число-аргумент первый
+числовой элемент списка из заданного 3-хэлементного списка-аргумента
+когда:
+
+\begin{enumerate}
+    \item все элементы списка --- числа,
+
+\vspace{4mm}
+\begin{minipage}{0.92\linewidth}
+\begin{lstlisting}
+(defun mul-first-nums (lst num)
+    (and lst (cons (* (car lst) num) (cdr lst))))
+\end{lstlisting}
+\end{minipage}
+
+    \item элементы списка --- любые объекты.
+
+\vspace{4mm}
+\begin{minipage}{0.92\linewidth}
+\begin{lstlisting}
+(defun mul-first-num (lst num)
+    (cond ((null lst) lst)
+          ((numberp (car lst)) (cons (* (car lst) num) (cdr lst)))
+          (T (cons (car lst) (mul-first-num (cdr lst) num)))))
+\end{lstlisting}
+\end{minipage}
+
+\end{enumerate}
+
+\section{Задание №9}
+
+Напишите функцию select-between, которая из списка-аргумента из 5 чисел
+выбирает только те, которые расположены между двумя указанными
+границами-аргументами и возвращает их в виде списка (упорядоченного по
+возрастанию списка чисел).
+
+\vspace{4mm}
+\begin{minipage}{0.92\linewidth}
+\begin{lstlisting}
+(defun select-between (lst begin end)
+    (cond ((null lst) Nil)
+          ((not (< begin (car lst) end))
+                (select-between (cdr lst) begin end))
+          (T (cons (car lst) (select-between (cdr lst) begin end)))))
+
+(defun sort-select-between (lst begin end)
+    (sort (select-between lst begin end) #'<))
+\end{lstlisting}
+\end{minipage}
+
+\chapter{Теоретические вопросы}
+
+\section{Структуроразрушающие и не разрушающие структуру списка
+функции}
+
+Структуроразрушающие функции --- функции, после использования которых
+теряется возможность работы изначальными списками. Эти функции изменяют сам
+объект. Чаще всего такие функции начинаются с префикса \texttt{n} (например,
+\texttt{nconc}, \texttt{nreverse} и т.~п.).
+
+Функции, не разрушающие структуру списка --- функции, после использования
+которых сохраняется возможность работы с изначальными списками. Эти функции
+не изменяют сам объект, а создают копии (например, \texttt{append},
+\texttt{reverse}, \texttt{length} и т.~п.).
+
+\section{Отличие в работе функций cons, list, append, nconc и в их результате}
+
+\texttt{conc} создает списковую ячейку и расставляет указатели (car-указатель
+--- на первый аргумент, cdr-указатель --- на второй аргумент), если второй
+аргумент --- список, то возвращает список, если нет --- точечную пару.
+
+\texttt{list} создает столько списковых ячеек, сколько аргументов, возвращет
+список.
+
+\texttt{append} создает копии всех элементов кроме последнего и расставляет
+cdr-указатели последних элементов копий на следующие копии/аргумент.
+
+\texttt{nconc} аналогична \texttt{append} только работает не с копиями, а с
+исходными списками.
