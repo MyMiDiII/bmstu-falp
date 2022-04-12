@@ -23,5 +23,4 @@ clauses
   likes(bill, Activity):-likes(tom, Activity).
 
 goal
-  likes(BaseballPlayer, baseball);
-  likes(TennisPlayer, tennis).
+  likes(BaseballPlayer, baseball).
