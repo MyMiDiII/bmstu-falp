@@ -9,8 +9,6 @@
  Comments:
 ******************************************************************************/
 
-include "lab11.inc"
-
 predicates
   likes(symbol, symbol)
   
