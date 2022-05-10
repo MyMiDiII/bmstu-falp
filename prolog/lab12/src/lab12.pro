@@ -39,8 +39,8 @@ clauses
   phone("Kirillovskaya",  "+7-954-284-48-79", addr("Anapa",  "Pionerskaya",  8, 42)).
   phone("Shumilova",      "+7-939-843-83-97", addr("Anapa",  "Moskovskaya",  1, 43)).
 
-  car("Smolina",       "BMW",     "black",  30000).
   car("Smolina",       "Mazda",   "blue",   25000).
+  car("Zhirov",        "BMW",     "black",  30000).
   car("Zhirov",        "GAZ",     "red",    10000).
   car("Shumilova",     "Ferrari", "yellow", 140000).
   car("Petrukhin",     "Toyota",  "grey",   20000).
@@ -75,7 +75,7 @@ clauses
 goal
   % PART 1
   % 1a
-  % carByPhone("+7-958-205-94-37", Lastname, Brand, Price).
+  % carByPhone("+7-905-157-89-39", Lastname, Brand, Price).
 
   % 1b
   % brandByPhone("+7-939-843-83-97", Brand).
