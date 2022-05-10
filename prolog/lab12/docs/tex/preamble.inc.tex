@@ -41,7 +41,7 @@
 % Lists
 \usepackage{enumitem}
 \renewcommand{\labelitemi}{$-$}
-\setlist{nosep, leftmargin=\parindent, wide}
+\setlist{nosep, leftmargin=\parindent}
 
 % Text
 \usepackage{amstext}
@@ -73,11 +73,8 @@
 
 \newcommand{\mylisting}[2] {
     \noindent
-    \begin{minipage}{\linewidth}
-        \vspace{5mm}
-        \begin{lstinputlisting}[
-            linerange={#2}
-        ]{../../src/#1}
-        \end{lstinputlisting}
-    \end{minipage}
-}
+    {
+    \captionsetup{justification=raggedright,singlelinecheck=off}
+    \begin{lstinputlisting}[linerange={#2}]{../../src/#1}
+    \end{lstinputlisting}
+}}
