@@ -91,4 +91,4 @@ goal
   % byCarInfo("GAZ", "red", Lastname, City, Phone, Bank).
 
   % no
-  byCarInfo("Tesla", "transparent", Lastname, City, Phone, Bank).
+  byCarInfo("Tesla", "green", Lastname, City, Phone, Bank).
