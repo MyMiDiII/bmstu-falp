@@ -9,16 +9,38 @@
  Comments:
 ******************************************************************************/
 
-include "lab14.inc"
+domains
+  name = string.
+  sex  = string.
 
 predicates
-
-  lab14()
+  parent(sex, name, name).
+  grandParent(sex, sex, name, name).
 
 clauses
+  parent("w", "Irina",     "Marina").
+  parent("m", "Dmitry",    "Marina").
+  parent("w", "Valentina", "Irina").
+  parent("m", "Nikolay",   "Irina").
+  parent("w", "Zoya",      "Dmitry").
+  parent("m", "Victor",    "Dmitry").
 
-  lab14():-!.
+  grandParent(Side, Sex, GrandParent, Child) :-
+    parent(Side, Parent, Child),
+    parent(Sex,  GrandParent, Parent).
 
 goal
+  % 1
+  % grandParent(_, "w", GrandParent, "Marina").
 
-  lab14().
+  % 2
+  % grandParent(_, "m", GrandParent, "Marina").
+
+  % 3
+  % grandParent(_, _, GrandParent, "Marina").
+
+  % 4
+  % grandParent("w", "w", GrandParent, "Marina").
+
+  % 5
+  grandParent("w", _, GrandParent, "Marina").
