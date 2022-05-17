@@ -80,14 +80,10 @@ clauses
   property(Lastname, PropType, PropName) :-
     propertyCost(Lastname, PropType, PropName, _).
 
-  cost(Lastname, "car", Cost) :-
-    owner(Lastname, car(_, _, Cost)), !.
-  cost(Lastname, "building", Cost) :-
-    owner(Lastname, building(_, Cost)), !.
-  cost(Lastname, "region", Cost) :-
-    owner(Lastname, region(_, Cost)), !.
-  cost(Lastname, "ship", Cost) :-
-    owner(Lastname, ship(_, Cost)), !.
+  cost(Lastname, "car", Cost)      :- owner(Lastname, car(_, _, Cost)), !.
+  cost(Lastname, "building", Cost) :- owner(Lastname, building(_, Cost)), !.
+  cost(Lastname, "region", Cost)   :- owner(Lastname, region(_, Cost)), !.
+  cost(Lastname, "ship", Cost)     :- owner(Lastname, ship(_, Cost)), !.
   cost(_, _, 0).
 
   totalPropCost(Lastname, Cost) :-
