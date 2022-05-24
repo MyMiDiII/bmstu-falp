@@ -1,4 +1,4 @@
-/*****************************************************************************
+  /*****************************************************************************
 
 		Copyright (c) BMSTU
 
@@ -24,18 +24,60 @@ predicates
   paid(empls, sals, resls).
   paid(empls, sals, resls, resls).
 
+  emplMaxRate(empls, lastname).
+  emplMaxRate(empls, rating, lastname, lastname).
+
+  maxSal(sals, salary).
+  maxSal(sals, salary, salary).
+
 clauses
+  emplMaxRate([], _, Res, Res).
+  emplMaxRate([empl(Ln, R, _)|T], Rat, _, Res) :-
+    R > Rat, 
+    emplMaxRate(T, R, Ln, Res), !.
+  emplMaxRate([_|T], Rat, CurRes, Res) :-
+    emplMaxRate(T, Rat, CurRes, Res).
+
+  emplMaxRate(Empls, Ln) :-
+    emplMaxRate(Empls, 0, "", Ln).
+
+  maxSal([], Res, Res).
+  maxSal([sal(S, _)|T], MaxSal, Res) :-
+    S > MaxSal, 
+    maxSal(T, S, Res), !.
+  maxSal([_|T], MaxSal, Res) :-
+    maxSal(T, MaxSal, Res).
+
+  maxSal(Sals, Res) :-
+    maxSal(Sals, 0, Res).
+
   paid([], _, Res, Res) :- !.
   paid(_, [], Res, Res).
-  paid([empl(Ln, _, _)|T], Sals, CurRes, Res) :-
-    paid(T, Sals, [res(Ln, 0)|CurRes], Res).
+  paid(Empls, Sals, CurRes, Res) :-
+    emplMaxRate(Empls, Ln),
+    %delMaxRate(Empls, Ln, NewEmpls),
+    maxSal(Sals, Sl),
+    %delMaxSal(Sasl, Sl, NewSals),
+    paid(Empls, Sals, [res(Ln, Sl)|CurRes], Res).
 
   paid(Empls, Sals, Res) :-
     paid(Empls, Sals, [], Res).
 
 goal
-  paid([empl("A", 3, "1"),
-        empl("B", 2, "3"),
-        empl("C", 1, "3")],
-       [sal(15, 2), 
-        sal(10, 3)], Res).
+  % Test search employee with max rating
+  % emplMaxRate([], Res). % Res=
+  % emplMaxRate([empl("A", 2, "1"),
+  %              empl("B", 3, "3"),
+  %              empl("C", 1, "2")], Res). % Res=B
+
+  % Test search max salary
+  % maxSal([], Res). % Res = 0
+  % maxSal([sal(15, 2), 
+  %         sal(10, 3)], Res). % Res=15
+
+  % Test full program
+  % paid([empl("A", 3, "1"),
+  %       empl("B", 2, "3"),
+  %       empl("C", 1, "3")],
+  %      [sal(15, 1), 
+  %       sal(10, 1)], Res).
