@@ -52,13 +52,14 @@ clauses
     maxSal(Sals, 0, Res).
 
   paid([], _, Res, Res) :- !.
-  paid(_, [], Res, Res).
-  paid(Empls, Sals, CurRes, Res) :-
-    emplMaxRate(Empls, Ln),
+  paid([empl(Ln, _, _)|T], [], CurRes, Res) :-
+    paid(T, [], [res(Ln, 0)|CurRes], Res).
+  paid([He|Te], [Hs|Ts], CurRes, Res) :-
+    emplMaxRate([He|Te], Ln),
     %delMaxRate(Empls, Ln, NewEmpls),
-    maxSal(Sals, Sl),
+    maxSal([Hs|Ts], Sl),
     %delMaxSal(Sasl, Sl, NewSals),
-    paid(Empls, Sals, [res(Ln, Sl)|CurRes], Res).
+    paid(Te, Ts, [res(Ln, Sl)|CurRes], Res).
 
   paid(Empls, Sals, Res) :-
     paid(Empls, Sals, [], Res).
@@ -76,8 +77,8 @@ goal
   %         sal(10, 3)], Res). % Res=15
 
   % Test full program
-  % paid([empl("A", 3, "1"),
-  %       empl("B", 2, "3"),
-  %       empl("C", 1, "3")],
-  %      [sal(15, 1), 
-  %       sal(10, 1)], Res).
+  paid([empl("A", 3, "1"),
+        empl("B", 2, "3"),
+        empl("C", 1, "3")],
+       [sal(15, 1), 
+        sal(10, 1)], Res).
